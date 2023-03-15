@@ -1,11 +1,14 @@
+import React from 'react';
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import Footer from './Footer.js';
 export default function App() {
-  return (
+  return ( 
     <View style={styles.container}>
-      <Text>Snapp!!!</Text>
-      <StatusBar style="auto" />
+      <Text style={{ fontSize: 24, textAlign: 'center' }}>
+        Main Page
+      </Text>
+      <Footer /> 
     </View>
   );
 }
