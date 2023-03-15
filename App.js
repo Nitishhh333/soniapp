@@ -8,7 +8,7 @@ export default function App() {
       <Text style={{ fontSize: 24, textAlign: 'center' }}>
         Main Page
       </Text>
-      <Footer />
+      <Footer /> 
     </View>
   );
 }
