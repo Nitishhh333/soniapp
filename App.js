@@ -30,7 +30,7 @@ function DetailsScreen({ navigation }) {
         onPress={() => navigation.navigate('Register')}>
           <Text>Register</Text>
         </TouchableOpacity>
-        <Footer />
+        <Footer /> 
       </View>
     
   );
