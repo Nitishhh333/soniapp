@@ -1,5 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+
+import React from "react";
+import { Login, Register, LoginPage, Forgetpassword } from "./src/components/MainContent";
+import { Copyright } from "./src/components/Footer";
+
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -11,65 +15,20 @@ import Footer from './src/components/Footer.jsx';
 
 const Stack = createNativeStackNavigator();
 
-function DetailsScreen({ navigation }) {
-  return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-
-      <AntDesign name="home" size={64} color="black" />
-
-      <TouchableOpacity
-        style={styles.loginBtn}
-        title="Login"
-        onPress={() => navigation.navigate('Login')}>
-        <Text>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.registerBtn}
-        title="Register"
-        onPress={() => navigation.navigate('Register')}>
-        <Text>Register</Text>
-      </TouchableOpacity>
-      <Footer />
-    </View>
-  );
-}
-
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: true }}>
-        <Stack.Screen name="Home" component={DetailsScreen} />
-        {/* <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} /> */}
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Home" component={LoginPage} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Forget Password" component={Forgetpassword} />
+
       </Stack.Navigator>
+      <Copyright /> 
     </NavigationContainer>
+    
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginBtn: {
-    width: '80%',
-    borderRadius: 25,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 40,
-    backgroundColor: '#ADD8E6',
-  },
-  registerBtn: {
-    width: '80%',
-    borderRadius: 25,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 40,
-    backgroundColor: '#e6e600',
-  },
-});
+
