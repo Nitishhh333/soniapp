@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Heading,
@@ -9,54 +9,96 @@ import {
   HStack,
   Center,
   NativeBaseProvider,
+  Alert,
+  IconButton,
+  CloseIcon,
+  Stack,
+  Text,
 } from 'native-base';
-
 function Register({ navigation }) {
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorEmail, setErroremail] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
   const [errorCpassword, setErrorCPassword] = useState('');
-  // const password = useRef(null);
-  const submitHandler = () => {
-    let error = false;
-
+  const statusArray = [
+    {
+      status: 'success',
+      title: 'Successfully Saved!',
+    },
+    {
+      status: 'error',
+      title: 'Please try again later!',
+    },
+    {
+      status: 'warning',
+      title: 'Poor internet connection.',
+    },
+  ];
+  useEffect(() => {
+    if (email.length == 0 || password.length == 0 || confirmPassword == 0) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+  });
+  const submitHandler = async () => {
+    setErroremail('');
+    setErrorPassword('');
+    setErrorCPassword('');
+    setError(false);
+    setSuccess(false);
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
     if (reg.test(email) === false) {
+      setError(true);
       setErroremail('Email is Not Correct');
-      error = true;
     }
-    if (errorEmail.length == 0) {
-      setErroremail('This field is required');
-      error = true;
+    if (email.length == 0) {
+      setError(true);
+      setErroremail('This Field is required.');
     }
-
     if (password.length == 0) {
       setErrorPassword('This field is required');
-      error = true;
+      setError(true);
     } else if (password != confirmPassword) {
       setErrorPassword('Password Must be same');
       setErrorCPassword('Password Must be same');
-      error = true;
+      setError(true);
     }
 
     if (confirmPassword.length == 0) {
       setErrorCPassword('This field is required');
-      error = true;
+      setError(true);
     } else if (password != confirmPassword) {
       setErrorPassword('Password Must be same');
       setErrorCPassword('Password Must be same');
-      error = true;
+      setError(true);
     }
-
-    if (error == false) {
-      setErrorPassword('');
-      setErrorCPassword('');
-      setErroremail('');
+    if (!error) {
+      await fetch('http://192.168.29.240:5000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.status == 'success') {
+            setSuccess(true);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   };
-
   return (
     <NativeBaseProvider>
       <Center flex={1} px="3">
@@ -82,6 +124,19 @@ function Register({ navigation }) {
               Sign up to continue!
             </Heading>
             <VStack space={3} mt="5">
+              {success ? (
+                <Alert w="100%" status="success">
+                  <HStack space={2} flexShrink={1}>
+                    <Alert.Icon mt="1" />
+                    <Text fontSize="md" color="coolGray.800">
+                      Success
+                    </Text>
+                  </HStack>
+                </Alert>
+              ) : (
+                ''
+              )}
+
               <FormControl isRequired isInvalid={errorEmail.length}>
                 <FormControl.Label>Email</FormControl.Label>
                 <Input value={email} type="email" onChangeText={setEmail} />
