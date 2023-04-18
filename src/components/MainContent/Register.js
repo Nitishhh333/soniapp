@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '@env';
+import axios from 'axios';
 import {
   Box,
   Heading,
@@ -45,6 +47,7 @@ function Register({ navigation }) {
       setError(false);
     }
   });
+
   const submitHandler = async () => {
     setErroremail('');
     setErrorPassword('');
@@ -78,7 +81,7 @@ function Register({ navigation }) {
       setError(true);
     }
     if (!error) {
-      await fetch('http://192.168.29.240:5000/register', {
+      await fetch(`http://192.168.6.64:5000/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
